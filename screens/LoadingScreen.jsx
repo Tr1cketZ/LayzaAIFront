@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, ActivityIndicator, Animated } from 'react-native';
+import { View, Text, ActivityIndicator, Animated, Image } from 'react-native';
 import globalStyles from '../styles/globalStyles';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const AnimatedView = Animated.createAnimatedComponent(View);
 
 const LoadingScreen = ({ navigation }) => {
   const [isLoginReady, setIsLoginReady] = useState(false); // Controla se Login está pronto
@@ -38,19 +41,34 @@ const LoadingScreen = ({ navigation }) => {
   }, [isLoginReady, slideAnim, navigation]);
 
   return (
-    <Animated.View
+    <AnimatedView
       style={[
-        globalStyles.container,
         {
-          opacity: fadeAnim, // Fade in
-          transform: [{ translateX: slideAnim }], // Deslize para esquerda
+          flex: 1,
+          opacity: fadeAnim,
+          transform: [{ translateX: slideAnim }],
         },
       ]}
     >
-      <Text style={globalStyles.title}>Layza</Text>
-      <Text>Bem Vindo a sua assistente de estudos virtual</Text>
-      <ActivityIndicator size="large" color="#007AFF" style={globalStyles.loadingIndicator} />
-    </Animated.View>
+      <LinearGradient
+        colors={['#0172B2', '#001645']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={globalStyles.container}
+      >
+
+        <View style={globalStyles.titleContainer}>
+          <Text style={globalStyles.title}>Layza</Text>
+          <Image
+            source={require('../assets/avatar.png')}
+            style={globalStyles.avatar}
+          />
+        </View>
+        <Text style={globalStyles.subtitle}>Bem Vindo a sua assistente de estudos virtual</Text>
+        <ActivityIndicator size="large" color="#ffffff" style={globalStyles.loadingIndicator} />
+
+      </LinearGradient>
+    </AnimatedView>
   );
 };
 

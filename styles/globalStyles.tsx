@@ -5,18 +5,36 @@ const globalStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    padding: 20,
   },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#007AFF',
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
   },
+  
+  avatar: {
+    width: 70,
+    height: 70,
+    borderRadius: 30, // 50% do tamanho para deixá-la redonda
+    marginRight: 10,
+  },
+  title: {
+    fontSize: 62,
+    fontFamily: 'Lobster-Regular',
+    fontWeight: '400',
+    color: '#FFFFFF',
+    // marginBottom: 20,
+    marginRight: 20,
+  },
   subtitle: {
-    fontSize: 18,
-    color: '#333',
+    fontSize: 20,
+    fontFamily:'Roboto',
+    fontWeight:500,
+    color: '#E8E8E8',
+    textAlign: 'center',
     marginBottom: 30,
+    paddingHorizontal: 60,
   },
   button: {
     backgroundColor: '#007AFF',
