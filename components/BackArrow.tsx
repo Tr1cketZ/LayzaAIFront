@@ -7,7 +7,7 @@ function BackArrow({navigation}: any) {
             style={globalStyles.backButton}
             onPress={() => navigation.goBack()}
         >
-            <Icon name="arrow-back" size={30} color="#007AFF" />
+            <Icon name="arrow-back" size={30} color="#ffffff" />
         </TouchableOpacity>
     )
 }

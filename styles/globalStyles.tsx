@@ -12,12 +12,29 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
+  buttonContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    width: '100%',
+    justifyContent: 'center',
+  },
   
+
   avatar: {
     width: 70,
     height: 70,
     borderRadius: 30, // 50% do tamanho para deixá-la redonda
     marginRight: 10,
+  },
+  logo: {
+    width: 230,
+    height: 230,
+    borderRadius: 115,
+    marginBottom: 20,
   },
   title: {
     fontSize: 62,
@@ -42,21 +59,27 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 8,
     marginVertical: 10,
-    width: 200,
+    width: 280,
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: '#2F80ED',
   },
   linkText: {
     fontSize: 16,
     color: '#007AFF',
     marginTop: 20,
-    textDecorationLine: 'underline',
+    textDecorationLine: 'none',
   },
   inputContainer: {
+    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.7)',
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
@@ -71,10 +94,11 @@ const globalStyles = StyleSheet.create({
     fontSize: 16,
     paddingVertical: 10,
   },
+  
   backButton: {
     position: 'absolute',
     top: 40,
-    left: 20,
+    left: -15,
   },
 });
 

@@ -60,7 +60,7 @@ const LoadingScreen = ({ navigation }) => {
         <View style={globalStyles.titleContainer}>
           <Text style={globalStyles.title}>Layza</Text>
           <Image
-            source={require('../assets/avatar.png')}
+            source={require('../assets/images/avatar.png')}
             style={globalStyles.avatar}
           />
         </View>
