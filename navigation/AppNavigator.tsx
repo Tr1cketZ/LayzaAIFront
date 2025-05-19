@@ -5,6 +5,7 @@ import LoadingScreen from '../screens/LoadingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import LoginFormScreen from '../screens/LoginFormScreen';
 import HomeScreen from '../screens/HomeScreen';
+import CriarContaScreen from '../screens/CriarContaScreen';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -24,7 +25,7 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="Loading" component={LoadingScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="LoginForm" component={LoginFormScreen} />
-        <Stack.Screen name="CriarConta" component={HomeScreen} />
+        <Stack.Screen name="CriarConta" component={CriarContaScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="EsqueceuSenha" component={HomeScreen} />
       </Stack.Navigator>
