@@ -7,6 +7,7 @@ import BackArrow from '../components/BackArrow';
 import { LinearGradient } from 'expo-linear-gradient';
 import { APILayzaAuth } from '../services/Api';
 import { PasswordResetRequest } from '../utils/Objects';
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome5';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -15,7 +16,7 @@ type RootStackParamList = {
   CriarConta: undefined;
   Home: undefined;
   EsqueceuSenha: undefined;
-  PasswordResetConfirm: undefined;
+  PasswordResetConfirm: {email: string};
 };
 
 type EsqueceuSenhaNavigationProp = StackNavigationProp<RootStackParamList, 'EsqueceuSenha'>;
@@ -36,7 +37,7 @@ const EsqueceuSenhaScreen: React.FC<Props> = ({ navigation }) => {
     try {
       await APILayzaAuth.passwordResetRequest(data);
       alert('Código de redefinição enviado para o seu email!');
-      navigation.navigate('PasswordResetConfirm');
+      navigation.navigate('PasswordResetConfirm', { email });
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.detail ||
@@ -57,18 +58,18 @@ const EsqueceuSenhaScreen: React.FC<Props> = ({ navigation }) => {
     >
       <View style={globalStyles.container}>
         <BackArrow navigation={navigation} />
-        <Image source={require('../assets/images/avatar.png')} style={[globalStyles.logo, { marginBottom: 20 }]} />
         <View style={[globalStyles.buttonContainer, { paddingHorizontal: 10, paddingVertical: 20 }]}>
-          <Text style={[globalStyles.text, { fontSize: 24, marginBottom: 20 }]}>Redefinir Senha</Text>
+          <IconFontAwesome name='couch' size={100} color="#2F80ED" />
+          <Text style={[globalStyles.text, { fontSize: 24, marginBottom: 20 }]}>Recuperação de Senha</Text>
           <Text style={{ color: '#757575', textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 20 }}>
-            Insira seu email para receber o código
+            Digite seu E-mail para iniciar a recuperação de senha
           </Text>
 
           <View style={globalStyles.inputContainer}>
             <Icon name="mail-outline" size={24} color="#2F80ED" style={{ marginRight: 10 }} />
             <TextInput
               style={globalStyles.input}
-              placeholder="Email"
+              placeholder="E-mail"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -77,7 +78,7 @@ const EsqueceuSenhaScreen: React.FC<Props> = ({ navigation }) => {
           </View>
 
           <TouchableOpacity style={globalStyles.button} onPress={handleResetRequest}>
-            <Text style={globalStyles.buttonText}>Enviar Código</Text>
+            <Text style={globalStyles.buttonText}>Recuperar Senha</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>

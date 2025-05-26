@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import globalStyles from '../styles/globalStyles';
@@ -9,6 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { APILayzaAuth } from '../services/Api';
 import { PasswordResetConfirmRequest } from '../utils/Objects';
 import { validatePassword } from '../utils/Validators';
+import { RouteProp } from '@react-navigation/native';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -17,28 +18,44 @@ type RootStackParamList = {
   CriarConta: undefined;
   Home: undefined;
   EsqueceuSenha: undefined;
-  PasswordResetConfirm: undefined;
+  PasswordResetConfirm: { email: string };
 };
 
 type PasswordResetConfirmNavigationProp = StackNavigationProp<RootStackParamList, 'PasswordResetConfirm'>;
+type PasswordResetConfirmScreenRouteProp = RouteProp<RootStackParamList, 'PasswordResetConfirm'>;
 
 interface Props {
   navigation: PasswordResetConfirmNavigationProp;
+  route: PasswordResetConfirmScreenRouteProp
 }
 
-const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation }) => {
+const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation, route }) => {
   const [email, setEmail] = useState<string>('');
-  const [code, setCode] = useState<string>('');
+  const [codeDigits, setCodeDigits] = useState<string[]>(Array(6).fill(''));
   const [newPassword, setNewPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  useEffect(() => {
+    setEmail(route.params.email);
+  }, [route.params.email]);
+  const handleCodeChange = (text: string, index: number) => {
+    const newDigits = [...codeDigits];
+    newDigits[index] = text.slice(0, 1); // Limita a um dígito
+    setCodeDigits(newDigits);
 
+    // Move o foco para o próximo campo
+    if (text && index < 5) {
+      const nextInput = inputs[index + 1].current;
+      if (nextInput) nextInput.focus();
+    }
+  };
   const handleResetConfirm = async () => {
     if (!email.includes('@') || !email.includes('.')) {
       alert('Insira um email válido, como exemplo@dominio.com');
       return;
     }
-    if (!code.trim()) {
-      alert('O código não pode estar em branco.');
+    const code = codeDigits.join('');
+    if (code.length !== 6 || code.includes('')) {
+      alert('Digite um código de 6 dígitos');
       return;
     }
     const passwordError = validatePassword(newPassword);
@@ -56,7 +73,7 @@ const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation }) => {
       alert(error)
     }
   };
-
+  const inputs = Array(6).fill(null).map((_, index) => React.createRef<TextInput>());
   return (
     <LinearGradient
       colors={['#0172B2', '#001645']}
@@ -66,34 +83,25 @@ const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation }) => {
     >
       <View style={globalStyles.container}>
         <BackArrow navigation={navigation} />
-        <Image source={require('../assets/images/avatar.png')} style={[globalStyles.logo, { marginBottom: 20 }]} />
         <View style={[globalStyles.buttonContainer, { paddingHorizontal: 10, paddingVertical: 20 }]}>
           <Text style={[globalStyles.text, { fontSize: 24, marginBottom: 20 }]}>Confirmar Redefinição</Text>
           <Text style={{ color: '#757575', textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 20 }}>
-            Insira o código e a nova senha
+            Digite o código e a nova senha
           </Text>
 
-          <View style={globalStyles.inputContainer}>
-            <Icon name="mail-outline" size={24} color="#2F80ED" style={{ marginRight: 10 }} />
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-
-          <View style={globalStyles.inputContainer}>
-            <Icon name="code" size={24} color="#2F80ED" style={{ marginRight: 10 }} />
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Código de redefinição"
-              value={code}
-              onChangeText={setCode}
-              keyboardType="numeric"
-            />
+          <View style={styles.codeContainer}>
+            {codeDigits.map((digit, index) => (
+              <TextInput
+                key={index}
+                ref={inputs[index]}
+                style={styles.codeInput}
+                value={digit}
+                onChangeText={(text) => handleCodeChange(text, index)}
+                keyboardType="numeric"
+                maxLength={1}
+                autoFocus={index === 0}
+              />
+            ))}
           </View>
 
           <View style={globalStyles.inputContainer}>
@@ -125,5 +133,21 @@ const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation }) => {
     </LinearGradient>
   );
 };
-
+const styles = StyleSheet.create({
+  codeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  codeInput: {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#2F80ED',
+    borderRadius: 5,
+    textAlign: 'center',
+    fontSize: 18,
+    color: '#000',
+  },
+});
 export default PasswordResetConfirmScreen;

@@ -18,7 +18,7 @@ type RootStackParamList = {
   CriarConta: undefined;
   Home: undefined;
   EsqueceuSenha: undefined;
-  PasswordResetConfirm: undefined;
+  PasswordResetConfirm: { email: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
