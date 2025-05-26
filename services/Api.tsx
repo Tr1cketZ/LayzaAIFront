@@ -37,19 +37,21 @@ export const APILayzaAuth = {
         try {
             return await api.post('/login/', data);
         } catch (error: any) {
-            throw new Error(error.response?.data?.detail || 'Erro ao fazer login');
+            const data = error.response.data;
+            const firstErrorField = Object.keys(data)[0];
+            throw new Error(data[firstErrorField][0] || 'Erro ao fazer login');
         }
     },
     passwordResetRequest: async (data: PasswordResetRequest): Promise<AxiosResponse<any>> => {
         try {
-            return await api.post('/password-reset-request', data);
+            return await api.post('/password-reset/', data);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || error.response?.data?.email?.[0] || 'Erro ao solicitar redefinição de senha');
         }
     },
     passwordResetConfirm: async (data: PasswordResetConfirmRequest): Promise<AxiosResponse<any>> => {
         try {
-            return await api.post('/password-reset-confirm', data);
+            return await api.post('/password-reset/confirm/', data);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || error.response?.data?.new_password?.[0] || 'Erro ao confirmar redefinição de senha');
         }

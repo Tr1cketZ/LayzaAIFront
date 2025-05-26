@@ -6,6 +6,10 @@ import globalStyles from '../styles/globalStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BackArrow from '../components/BackArrow';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useDispatch } from 'react-redux';
+import { LoginRequest } from '../utils/Objects';
+import { APILayzaAuth } from '../services/Api';
+import { setTokens } from '../redux/AuthSlice';
 
 // Definir o tipo das rotas
 type RootStackParamList = {
@@ -24,13 +28,22 @@ interface Props {
 }
 
 const LoginFormScreen: React.FC<Props> = ({ navigation }) => {
-  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const dispatch = useDispatch();
 
-  const handleLogin = () => {
-    // Simulação de login, navega para Home
-    console.log(username, password);
-    navigation.navigate('Home');
+  const handleLogin = async () => {
+    if(!email.includes('@') || !email.includes('.')) return alert('Insira um email válido, como exemplo@dominio.com');
+    if(!password.trim()) return alert('A senha não pode estar em branco.');
+    const data: LoginRequest = { email, password };
+    try{
+      const response = await APILayzaAuth.login(data);
+      dispatch(setTokens(response.data));
+      navigation.navigate('Home');
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.detail || error.response?.data?.email?.[0] || error.response?.data?.password?.[0] || error.message || 'Erro ao fazer login';
+      alert(`Erro ao fazer login: ${errorMessage}`);
+    }
   };
 
   const handleEsqueceuSenha = () => {
@@ -60,14 +73,16 @@ const LoginFormScreen: React.FC<Props> = ({ navigation }) => {
             <TextInput
               style={globalStyles.input}
               placeholder="Email"
-              value={username}
-              onChangeText={setUsername}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType='email-address'
+              autoCapitalize='none'
             />
           </View>
 
           {/* Campo Senha */}
           <View style={globalStyles.inputContainer}>
-            <Feather name="eye-off" size={20} color="#2F80ED" style={{ marginRight: 10 }} />
+            <Feather name="lock" size={20} color="#2F80ED" style={{ marginRight: 10 }} />
             <TextInput
               style={globalStyles.input}
               placeholder="Senha"

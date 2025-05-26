@@ -44,7 +44,6 @@ const CriarContaScreen: React.FC<Props> = ({ navigation }) => {
     }
     const data: RegisterRequest = { username, email, password };
     try {
-        console.log(data);
       await APILayzaAuth.register(data);
       alert('Conta criada com sucesso!');
       navigation.navigate('LoginForm');
