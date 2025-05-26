@@ -30,6 +30,7 @@ interface Props {
 const LoginFormScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const handleLogin = async () => {
@@ -41,7 +42,7 @@ const LoginFormScreen: React.FC<Props> = ({ navigation }) => {
       dispatch(setTokens(response.data));
       navigation.navigate('Home');
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || error.response?.data?.email?.[0] || error.response?.data?.password?.[0] || error.message || 'Erro ao fazer login';
+      const errorMessage = error;
       alert(`Erro ao fazer login: ${errorMessage}`);
     }
   };
@@ -82,13 +83,13 @@ const LoginFormScreen: React.FC<Props> = ({ navigation }) => {
 
           {/* Campo Senha */}
           <View style={globalStyles.inputContainer}>
-            <Feather name="lock" size={20} color="#2F80ED" style={{ marginRight: 10 }} />
+            <Feather name={showPassword ? 'eye' : 'eye-off'} size={20} color="#2F80ED" style={{ marginRight: 10 }} onPress={() => setShowPassword(!showPassword)} />
             <TextInput
               style={globalStyles.input}
               placeholder="Senha"
               value={password}
               onChangeText={setPassword}
-              secureTextEntry
+              secureTextEntry={!showPassword}
             />
           </View>
 

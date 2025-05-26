@@ -53,7 +53,9 @@ export const APILayzaAuth = {
         try {
             return await api.post('/password-reset/confirm/', data);
         } catch (error: any) {
-            throw new Error(error.response?.data?.detail || error.response?.data?.new_password?.[0] || 'Erro ao confirmar redefinição de senha');
+            const data = error.response.data;
+            const firstErrorField = Object.keys(data)[0];
+            throw new Error(data[firstErrorField] || 'Erro ao confirmar redefinição de senha');
         }
     },
 };

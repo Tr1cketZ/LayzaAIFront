@@ -8,6 +8,8 @@ import HomeScreen from '../screens/HomeScreen';
 import CriarContaScreen from '../screens/CriarContaScreen';
 import { Provider } from 'react-redux';
 import { store } from '../redux';
+import EsqueceuSenhaScreen from '../screens/EsqueceuSenhaScreen';
+import PasswordResetConfirmScreen from '../screens/PasswordReserConfirmScreen';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -16,6 +18,7 @@ type RootStackParamList = {
   CriarConta: undefined;
   Home: undefined;
   EsqueceuSenha: undefined;
+  PasswordResetConfirm: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -30,7 +33,8 @@ const AppNavigator: React.FC = () => {
           <Stack.Screen name="LoginForm" component={LoginFormScreen} />
           <Stack.Screen name="CriarConta" component={CriarContaScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="EsqueceuSenha" component={HomeScreen} />
+          <Stack.Screen name="EsqueceuSenha" component={EsqueceuSenhaScreen} />
+          <Stack.Screen name="PasswordResetConfirm" component={PasswordResetConfirmScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
