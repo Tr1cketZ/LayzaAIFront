@@ -83,7 +83,7 @@ const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation, route }) => {
             />
           <Text style={[globalStyles.text, { fontSize: 24, marginBottom: 20 }]}>Confirmar Redefinição</Text>
           <Text style={{ color: '#757575', textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 20 }}>
-            Digite o código e a nova senha
+            Digite o código
           </Text>
 
           <View style={styles.codeContainer}>
