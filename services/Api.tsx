@@ -58,6 +58,15 @@ export const APILayzaAuth = {
             throw new Error(data[firstErrorField] || 'Erro ao confirmar redefinição de senha');
         }
     },
+    verifyCode: async ({code, email}: {code: string, email: string}): Promise<AxiosResponse<any>> => {
+        try {
+            return await api.post('/password-reset/verify-code/', { code, email });
+        } catch (error: any) {
+            const data = error.response.data;
+            const firstErrorField = Object.keys(data)[0];
+            throw new Error(data[firstErrorField] || 'Erro ao confirmar redefinição de senha');
+        }
+    }
 };
 
 export const APILayzaPerfil = {

@@ -17,6 +17,7 @@ type RootStackParamList = {
   Home: undefined;
   EsqueceuSenha: undefined;
   PasswordResetConfirm: {email: string};
+  PasswordResetPassword: {email: string, code: string};
 };
 
 type EsqueceuSenhaNavigationProp = StackNavigationProp<RootStackParamList, 'EsqueceuSenha'>;

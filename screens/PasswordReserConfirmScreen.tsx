@@ -19,6 +19,7 @@ type RootStackParamList = {
   Home: undefined;
   EsqueceuSenha: undefined;
   PasswordResetConfirm: { email: string };
+  NewPasswordScreen: { email: string, code: string };
 };
 
 type PasswordResetConfirmNavigationProp = StackNavigationProp<RootStackParamList, 'PasswordResetConfirm'>;
@@ -32,8 +33,6 @@ interface Props {
 const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation, route }) => {
   const [email, setEmail] = useState<string>('');
   const [codeDigits, setCodeDigits] = useState<string[]>(Array(6).fill(''));
-  const [newPassword, setNewPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   useEffect(() => {
     setEmail(route.params.email);
   }, [route.params.email]);
@@ -48,31 +47,24 @@ const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation, route }) => {
       if (nextInput) nextInput.focus();
     }
   };
-  const handleResetConfirm = async () => {
-    if (!email.includes('@') || !email.includes('.')) {
-      alert('Insira um email válido, como exemplo@dominio.com');
-      return;
-    }
+
+  const verifyCode = async () =>{
     const code = codeDigits.join('');
     if (code.length !== 6 || code.includes(' ')) {
       alert('Digite um código de 6 dígitos');
-      return;
+      return false;
     }
-    const passwordError = validatePassword(newPassword);
-    if (passwordError) {
-      alert(passwordError);
-      return;
-    }
-
-    const data: PasswordResetConfirmRequest = { email, code, new_password: newPassword };
+    const data: { code: string; email: string;} = { code, email};
     try {
-      await APILayzaAuth.passwordResetConfirm(data);
-      alert('Senha redefinida com sucesso!');
-      navigation.navigate('LoginForm');
+      await APILayzaAuth.verifyCode(data);
+      alert('Código verificado com sucesso!');
+      navigation.navigate('NewPasswordScreen', { email, code });
     } catch (error: any) {
       alert(error)
     }
-  };
+    return true;
+  }
+  
   const inputs = Array(6).fill(null).map((_, index) => React.createRef<TextInput>());
   return (
     <LinearGradient
@@ -107,27 +99,10 @@ const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation, route }) => {
                 autoFocus={index === 0}
               />
             ))}
-          </View>
+          </View>        
 
-          <View style={globalStyles.inputContainer}>
-            <Feather
-              name={showPassword ? "eye" : "eye-off"}
-              size={20}
-              color="#2F80ED"
-              style={{ marginRight: 10 }}
-              onPress={() => setShowPassword(!showPassword)}
-            />
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Nova senha"
-              value={newPassword}
-              onChangeText={setNewPassword}
-              secureTextEntry={!showPassword}
-            />
-          </View>
-
-          <TouchableOpacity style={globalStyles.button} onPress={handleResetConfirm}>
-            <Text style={globalStyles.buttonText}>Confirmar Nova Senha</Text>
+          <TouchableOpacity style={globalStyles.button} onPress={verifyCode}>
+            <Text style={globalStyles.buttonText}>Confirmar Código</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
