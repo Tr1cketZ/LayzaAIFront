@@ -54,7 +54,7 @@ const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation, route }) => {
       return;
     }
     const code = codeDigits.join('');
-    if (code.length !== 6 || code.includes('')) {
+    if (code.length !== 6 || code.includes(' ')) {
       alert('Digite um código de 6 dígitos');
       return;
     }
@@ -84,6 +84,11 @@ const PasswordResetConfirmScreen: React.FC<Props> = ({ navigation, route }) => {
       <View style={globalStyles.container}>
         <BackArrow navigation={navigation} />
         <View style={[globalStyles.buttonContainer, { paddingHorizontal: 10, paddingVertical: 20 }]}>
+        <Feather
+              name={'lock'}
+              size={100}
+              color="#2F80ED"
+            />
           <Text style={[globalStyles.text, { fontSize: 24, marginBottom: 20 }]}>Confirmar Redefinição</Text>
           <Text style={{ color: '#757575', textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 20 }}>
             Digite o código e a nova senha
@@ -148,6 +153,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     color: '#000',
+    marginHorizontal: 5,
   },
 });
 export default PasswordResetConfirmScreen;
