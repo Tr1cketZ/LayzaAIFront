@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import globalStyles from '../styles/globalStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
-import BackArrow from '../components/BackArrow';
+import {BackArrow} from '../components/BackArrow';
 import { LinearGradient } from 'expo-linear-gradient';
 import { APILayzaAuth } from '../services/Api';
 import { PasswordResetRequest } from '../utils/Objects';

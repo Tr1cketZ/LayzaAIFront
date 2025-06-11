@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import globalStyles from '../styles/globalStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
-import BackArrow from '../components/BackArrow';
+import {BackArrow} from '../components/BackArrow';
 import { LinearGradient } from 'expo-linear-gradient';
 import { APILayzaAuth } from '../services/Api';
 import { PasswordResetConfirmRequest } from '../utils/Objects';

@@ -7,6 +7,13 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  containerMain: {
+    flex: 1,
+    backgroundColor: '#2F80ED',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -22,8 +29,6 @@ const globalStyles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
   },
-  
-
   avatar: {
     width: 70,
     height: 70,
@@ -99,6 +104,49 @@ const globalStyles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     left: -15,
+  },
+  backButtonMain: {
+    position: 'absolute',
+    top: 40,
+    left: 15,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '90%',
+    marginBottom: 20,
+  },
+   content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
+  },
+  searchInput: {
+    width: '100%',
+    height: 40,
+    backgroundColor: '#FFF',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    color: '#000',
+  },
+  optionButton: {
+    backgroundColor: '#87CEEB',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    marginVertical: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    paddingVertical: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 });
 

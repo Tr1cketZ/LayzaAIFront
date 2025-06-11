@@ -66,6 +66,13 @@ export const APILayzaAuth = {
             const firstErrorField = Object.keys(data)[0];
             throw new Error(data[firstErrorField] || 'Erro ao confirmar redefinição de senha');
         }
+    },
+    getPerfil: async (): Promise<AxiosResponse<PerfilResponse>> => {
+        try {
+            return await api.get('/perfil/');
+        } catch (error: any) {
+            throw new Error('Erro ao buscar perfil do usuário');
+        }
     }
 };
 

@@ -4,12 +4,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import globalStyles from '../styles/globalStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
-import BackArrow from '../components/BackArrow';
+import {BackArrow} from '../components/BackArrow';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
 import { LoginRequest } from '../utils/Objects';
-import { APILayzaAuth } from '../services/Api';
+import { APILayzaAuth, APILayzaPerfil } from '../services/Api';
 import { setTokens } from '../redux/AuthSlice';
+import { setUserProfile } from '../redux/UserProfileSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Definir o tipo das rotas
 type RootStackParamList = {
@@ -40,6 +42,11 @@ const LoginFormScreen: React.FC<Props> = ({ navigation }) => {
     try{
       const response = await APILayzaAuth.login(data);
       dispatch(setTokens(response.data));
+      // Buscar perfil do usuário após login
+      const perfilResponse = await APILayzaAuth.getPerfil();
+      dispatch(setUserProfile(perfilResponse.data));
+      // Salvar no AsyncStorage
+      await AsyncStorage.setItem('userProfile', JSON.stringify(perfilResponse.data));
       navigation.navigate('Home');
     } catch (error: any) {
       const errorMessage = error;

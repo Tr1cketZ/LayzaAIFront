@@ -11,5 +11,15 @@ function BackArrow({navigation}: any) {
         </TouchableOpacity>
     )
 }
+function BackArrowMain({navigation}: any) {
+    return (
+        <TouchableOpacity
+            style={globalStyles.backButtonMain}
+            onPress={() => navigation.goBack()}
+        >
+            <Icon name="arrow-back" size={30} color="#ffffff" />
+        </TouchableOpacity>
+    )
+}
 
-export default BackArrow
+export { BackArrow, BackArrowMain};
