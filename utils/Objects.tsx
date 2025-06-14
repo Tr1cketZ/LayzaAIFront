@@ -56,6 +56,8 @@ export interface PerfilResponse {
     pref_visual: boolean;
     pref_auditivo: boolean;
     pref_leitura_escrita: boolean;
+    serie_atual: string;
+    foto_perfil?: string;
 }
 
 export interface ConteudoResponse {

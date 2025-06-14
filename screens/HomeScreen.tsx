@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import globalStyles from '../styles/globalStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BottomNav from '../components/BottomNav';
+import { API_BASE_URL } from '../services/Api';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -23,7 +24,14 @@ interface Props {
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const username = useSelector((state: any) => state.userProfile?.profile?.username || 'Estudante');
+  const userPhoto = useSelector((state: any) => state.userProfile?.profile?.foto_perfil);
 
+  const getPhoto = () => {
+    if (userPhoto) {
+      return { uri: `${API_BASE_URL}${userPhoto}` };
+    }
+    return require('../assets/images/avatar.png'); // Default avatar if no photo is available
+  };
   const navigateToPlaceholder = (screen: keyof RootStackParamList) => {
     navigation.navigate(screen);
   };
@@ -43,7 +51,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <View style={globalStyles.header}>
         <Text style={globalStyles.helloUser}>{getGreeting()}, {username}</Text>
         <TouchableOpacity onPress={() => navigateToPlaceholder('Placeholder')}>
-          <Image source={require('../assets/images/avatar.png')} style={globalStyles.avatarMain} />
+          <Image source={getPhoto()} style={globalStyles.avatarMain} />
         </TouchableOpacity>
       </View>
       <View style={globalStyles.content}>

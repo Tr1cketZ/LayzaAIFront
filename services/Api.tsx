@@ -5,9 +5,10 @@ import {
     PerfilUpdateRequest, ConteudoRequest, ProvaRequest, AvaliacaoRequest,
     PerfilResponse, ConteudoResponse, ProvaResponse, AvaliacaoResponse
 } from '../utils/Objects';
+export const API_BASE_URL = process.env.REACT_NATIVE_API_URL || 'http://10.0.2.2:8000';
 // Configuração da instância do Axios
 const api: AxiosInstance = axios.create({
-    baseURL: process.env.REACT_NATIVE_API_URL || 'http://10.0.2.2:8000/api',
+    baseURL: process.env.REACT_NATIVE_API_URL || `${API_BASE_URL}/api`,
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
