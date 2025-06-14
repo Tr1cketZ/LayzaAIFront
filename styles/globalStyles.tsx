@@ -9,10 +9,11 @@ const globalStyles = StyleSheet.create({
   },
   containerMain: {
     flex: 1,
-    backgroundColor: '#2F80ED',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 30,
+    paddingTop: 60,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -33,6 +34,12 @@ const globalStyles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 30, // 50% do tamanho para deixá-la redonda
+    marginRight: 10,
+  },
+  avatarMain: {
+    width: 70,
+    height: 70,
+    borderRadius: 50, // 50% do tamanho para deixá-la redonda
     marginRight: 10,
   },
   logo: {
@@ -57,6 +64,15 @@ const globalStyles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 30,
     paddingHorizontal: 60,
+  },
+  helloUser: {
+    fontSize: 30,
+    fontFamily:'Roboto',
+    fontWeight:700,
+    color: '#2F80ED',
+    textAlign: 'center',
+    marginLeft: -20,
+    marginRight: 20,
   },
   button: {
     backgroundColor: '#007AFF',
@@ -122,12 +138,15 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '90%',
+    paddingBottom: 60,
   },
   searchInput: {
     width: '100%',
     height: 40,
     backgroundColor: '#FFF',
-    borderRadius: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
     paddingHorizontal: 15,
     marginBottom: 20,
     color: '#000',
@@ -142,11 +161,22 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
   },
   bottomNav: {
+    position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '100%',
     paddingVertical: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(255,255,255, 0.5)',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  activeIndicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#FF0000',
+    marginTop: 2,
+    alignSelf: 'center',
   },
 });
 

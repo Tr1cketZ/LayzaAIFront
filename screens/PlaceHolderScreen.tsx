@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import globalStyles from '../styles/globalStyles';
+import BottomNav from '../components/BottomNav';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -31,6 +32,7 @@ const PlaceholderScreen: React.FC<Props> = ({ navigation }) => {
       <View style={globalStyles.container}>
         <Text style={globalStyles.title}>Placeholder Screen</Text>
       </View>
+      <BottomNav navigation={navigation} />
     </LinearGradient>
   );
 };
