@@ -66,7 +66,7 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 60,
   },
   helloUser: {
-    fontSize: 30,
+    fontSize: 25,
     fontFamily:'Roboto',
     fontWeight:700,
     color: '#2F80ED',

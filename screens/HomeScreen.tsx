@@ -49,7 +49,9 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={globalStyles.containerMain}>
       <View style={globalStyles.header}>
-        <Text style={globalStyles.helloUser}>{getGreeting()}, {username}</Text>
+        <View style={{ width: '80%' }}>
+          <Text style={globalStyles.helloUser}>{getGreeting()}, {username}</Text>
+        </View>
         <TouchableOpacity onPress={() => navigateToPlaceholder('Placeholder')}>
           <Image source={getPhoto()} style={globalStyles.avatarMain} />
         </TouchableOpacity>
