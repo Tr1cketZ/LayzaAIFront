@@ -4,7 +4,6 @@ import BottomNav from "../components/BottomNav";
 
 export default function ChatScreen({ navigation, route }: { navigation: any, route: any }) {
     const subject  = route.params?.subject || { name: "Matéria", color: "#fff" }; // Fallback caso subject não seja passado
-    console.log("Selected Subject:", subject);
     const [input, setInput] = useState("");
 
 

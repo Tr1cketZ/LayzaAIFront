@@ -12,9 +12,9 @@ const ChatLogic = () => {
     color: string;
   }
   const subjects: Subject[] = [
-    { name: 'Matemática', color: '#FFC1CC' },
-    { name: 'Português', color: '#B3D4FC' },
-    { name: 'Ciências', color: '#C1E1C1' },
+    { name: 'Matemática', color: '#FFCDCD' },
+    { name: 'Português', color: '#B2D0F9' },
+    { name: 'Ciências', color: '#E2FFC9' },
   ];
 
   const openSubjectSelector = () => {
