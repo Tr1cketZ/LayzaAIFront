@@ -5,6 +5,7 @@ import globalStyles from '../styles/globalStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BottomNav from '../components/BottomNav';
 import { API_BASE_URL } from '../services/Api';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -23,14 +24,15 @@ interface Props {
 }
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-  const username = useSelector((state: any) => state.userProfile?.profile?.username || 'Estudante');
-  const userPhoto = useSelector((state: any) => state.userProfile?.profile?.foto_perfil);
+  const userProfile = useSelector((state: any) => state.userProfile?.profile);
+  const username = userProfile?.username || 'Estudante';
+  const userPhoto = userProfile?.foto_perfil;
 
   const getPhoto = () => {
     if (userPhoto) {
       return { uri: `${API_BASE_URL}${userPhoto}` };
     }
-    return require('../assets/images/avatar.png'); // Default avatar if no photo is available
+    return require('../assets/images/avatar.png');
   };
   const navigateToPlaceholder = (screen: keyof RootStackParamList) => {
     navigation.navigate(screen);
@@ -52,9 +54,15 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <View style={{ width: '80%' }}>
           <Text style={globalStyles.helloUser}>{getGreeting()}, {username}</Text>
         </View>
-        <TouchableOpacity onPress={() => navigateToPlaceholder('Placeholder')}>
-          <Image source={getPhoto()} style={globalStyles.avatarMain} />
-        </TouchableOpacity>
+        {userProfile ? (
+          <TouchableOpacity onPress={() => navigateToPlaceholder('Placeholder')}>
+            <Image source={getPhoto()} style={globalStyles.avatarMain} />
+          </TouchableOpacity>
+        ) : (
+          <View style={[globalStyles.avatarMain, { justifyContent: 'center', alignItems: 'center', backgroundColor: '#eee' }]}>
+            <Icon name="person-outline" size={40} color="#888" />
+          </View>
+        )}
       </View>
       <View style={globalStyles.content}>
         <Text style={[globalStyles.text]}>Explorar</Text>

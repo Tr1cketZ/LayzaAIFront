@@ -41,6 +41,8 @@ const globalStyles = StyleSheet.create({
     height: 70,
     borderRadius: 50, // 50% do tamanho para deixá-la redonda
     marginRight: 10,
+    borderWidth: 2,
+    borderColor: '#007AFF',
   },
   logo: {
     width: 230,
