@@ -3,6 +3,10 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import globalStyles from '../styles/globalStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useDispatch } from 'react-redux';
+import { clearUserProfile } from '../redux/UserProfileSlice';
+import { clearTokens } from '../redux/AuthSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -16,6 +20,7 @@ interface Props {
   navigation: LoginScreenNavigationProp
 }
 function LoginScreen({ navigation }: Props) {
+  const dispatch = useDispatch();
   const handleLogin = () => {
     navigation.navigate('LoginForm');
   }
@@ -23,6 +28,14 @@ function LoginScreen({ navigation }: Props) {
     navigation.navigate('CriarConta');
   }
   const handleMaisTarde = () => {
+    dispatch(clearUserProfile());
+    dispatch(clearTokens());
+    // Limpa também o AsyncStorage
+    AsyncStorage.removeItem('userProfile');
+    AsyncStorage.removeItem('persist:root'); // caso use persist
+    AsyncStorage.removeItem('accessToken');
+    AsyncStorage.removeItem('refreshToken');
+
     navigation.navigate('Home');
   }
   return (
@@ -54,3 +67,4 @@ function LoginScreen({ navigation }: Props) {
 };
 
 export default LoginScreen;
+

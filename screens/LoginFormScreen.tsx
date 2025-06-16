@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -8,9 +8,9 @@ import {BackArrow} from '../components/BackArrow';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from 'react-redux';
 import { LoginRequest } from '../utils/Objects';
-import { APILayzaAuth, APILayzaPerfil } from '../services/Api';
+import { APILayzaAuth } from '../services/Api';
 import { setTokens } from '../redux/AuthSlice';
-import { setUserProfile } from '../redux/UserProfileSlice';
+import { setUserProfile, clearUserProfile } from '../redux/UserProfileSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Definir o tipo das rotas

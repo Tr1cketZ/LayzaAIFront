@@ -1,13 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, FlatList, ActivityIndicator, Image } from "react-native";
 import BottomNav from "../components/BottomNav";
 import useChat from "../IA/useChat";
+import { useSelector } from "react-redux";
+import { API_BASE_URL } from "../services/Api";
 
 export default function ChatScreen({ navigation, route }: { navigation: any, route: any }) {
     const subject = route.params?.subject || { name: "Matéria", color: "#fff" };
     const [input, setInput] = useState("");
     const { messages, sendMessage, loading, clearChat } = useChat(subject);
     const flatListRef = useRef<FlatList>(null);
+    const userProfile = useSelector((state: any) => state.userProfile?.profile);
+    const userPhoto = userProfile?.foto_perfil;
+    const chatPhoto = ({ item }: { item: { sender: string; content: string } }) => {   
+        if (userPhoto) {
+            return <Image
+                source={item.sender === "user" ? { uri: `${API_BASE_URL}${userPhoto}` } : require("../assets/images/avatar.png")}
+                style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
+            />
+        }
+        return <Image
+                source={item.sender === "user" ? require("../assets/images/avatar.png") : require("../assets/images/avatar.png")}
+                style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
+            />
+    }
 
     const handleSend = () => {
         if (input.trim()) {
@@ -17,8 +33,14 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
     };
 
     const renderMessage = ({ item }: { item: { sender: string; content: string } }) => (
-        <View style={[styles.message, item.sender === "user" ? styles.userMessage : styles.botMessage]}>
-            <Text style={{ color: item.sender === "user" ? "#fff" : "#222" }}>{item.content}</Text>
+        <View>
+            <Image
+                source={item.sender === "user" ? require("../assets/images/avatar.png") : require("../assets/images/avatar.png")}
+                style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
+            />
+            <View style={[styles.message, item.sender === "user" ? styles.userMessage : styles.botMessage]}>
+                <Text style={{ color: item.sender === "user" ? "#fff" : "#222" }}>{item.content}</Text>
+            </View>
         </View>
     );
 
@@ -115,6 +137,12 @@ const styles = StyleSheet.create({
     botMessage: {
         backgroundColor: "#f0f0f0",
         alignSelf: 'flex-start',
+    },
+    avatar: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        marginRight: 10,
     },
     inputContainer: {
         flexDirection: "row",
