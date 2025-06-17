@@ -21,7 +21,7 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
             />
         }
         return <Image
-            source={item.sender === "user" ? require("../assets/images/avatar.png") : require("../assets/images/avatar.png")}
+            source={item.sender === "user" ? require("../assets/images/studentIcon.png") : require("../assets/images/avatar.png")}
             style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
         />
     }

@@ -32,7 +32,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     if (userPhoto) {
       return { uri: `${API_BASE_URL}${userPhoto}` };
     }
-    return require('../assets/images/avatar.png');
+    return require('../assets/images/studentIcon.png');
   };
   const navigateToPlaceholder = (screen: keyof RootStackParamList) => {
     navigation.navigate(screen);
