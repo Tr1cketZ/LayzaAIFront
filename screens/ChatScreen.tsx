@@ -4,6 +4,7 @@ import BottomNav from "../components/BottomNav";
 import useChat from "../IA/useChat";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../services/Api";
+import { renderMarkdownToRN } from '../utils/RenderMarkDown';
 
 export default function ChatScreen({ navigation, route }: { navigation: any, route: any }) {
     const subject = route.params?.subject || { name: "Matéria", color: "#fff" };
@@ -12,7 +13,7 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
     const flatListRef = useRef<FlatList>(null);
     const userProfile = useSelector((state: any) => state.userProfile?.profile);
     const userPhoto = userProfile?.foto_perfil;
-    const chatPhoto = ({ item }: { item: { sender: string; content: string } }) => {   
+    const chatPhoto = ({ item }: { item: { sender: string; content: string } }) => {
         if (userPhoto) {
             return <Image
                 source={item.sender === "user" ? { uri: `${API_BASE_URL}${userPhoto}` } : require("../assets/images/avatar.png")}
@@ -20,9 +21,9 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
             />
         }
         return <Image
-                source={item.sender === "user" ? require("../assets/images/avatar.png") : require("../assets/images/avatar.png")}
-                style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
-            />
+            source={item.sender === "user" ? require("../assets/images/avatar.png") : require("../assets/images/avatar.png")}
+            style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
+        />
     }
 
     const handleSend = () => {
@@ -34,12 +35,12 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
 
     const renderMessage = ({ item }: { item: { sender: string; content: string } }) => (
         <View>
-            <Image
-                source={item.sender === "user" ? require("../assets/images/avatar.png") : require("../assets/images/avatar.png")}
-                style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
-            />
+            {chatPhoto({ item })}
             <View style={[styles.message, item.sender === "user" ? styles.userMessage : styles.botMessage]}>
-                <Text style={{ color: item.sender === "user" ? "#fff" : "#222" }}>{item.content}</Text>
+                {item.sender === "bot"
+                    ? renderMarkdownToRN(item.content)
+                    : <Text style={{ color: "#fff" }}>{item.content}</Text>
+                }
             </View>
         </View>
     );
