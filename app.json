@@ -19,10 +19,21 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO"
+      ],
+      "package": "com.profbruneca.LayzaAIFront"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5fe005d4-d76d-4a20-b4a1-c4d1c76df2ed"
+      }
+    },
+    "owner": "profbruneca"
   }
 }
