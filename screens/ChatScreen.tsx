@@ -5,6 +5,7 @@ import useChat from "../IA/useChat";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../services/Api";
 import { renderMarkdownToRN } from '../utils/RenderMarkDown';
+import MicIcon from '../components/MicIcon';
 
 export default function ChatScreen({ navigation, route }: { navigation: any, route: any }) {
     const subject = route.params?.subject || { name: "Matéria", color: "#fff" };
@@ -93,6 +94,7 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
                         onSubmitEditing={handleSend}
                         editable={!loading}
                     />
+                    <MicIcon onTranscribe={setInput} />
                     <TouchableOpacity style={styles.sendButton} onPress={handleSend} disabled={loading || !input.trim()}>
                         <Text style={{ color: "#fff", fontWeight: "bold" }}>Enviar</Text>
                     </TouchableOpacity>
