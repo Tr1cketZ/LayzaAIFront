@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../services/Api";
 import { renderMarkdownToRN } from '../utils/RenderMarkDown';
 import MicIcon from '../components/MicIcon';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default function ChatScreen({ navigation, route }: { navigation: any, route: any }) {
     const subject = route.params?.subject || { name: "Matéria", color: "#fff" };
@@ -96,7 +97,7 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
                     />
                     <MicIcon onTranscribe={setInput} />
                     <TouchableOpacity style={styles.sendButton} onPress={handleSend} disabled={loading || !input.trim()}>
-                        <Text style={{ color: "#fff", fontWeight: "bold" }}>Enviar</Text>
+                        <MaterialIcons name="send" size={24} color="#fff" />
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         borderTopWidth: 1,
         borderColor: "#eee",
-        paddingBottom: 60
+        paddingBottom: 80
     },
     input: {
         flex: 1,

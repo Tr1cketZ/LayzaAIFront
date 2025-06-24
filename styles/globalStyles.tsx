@@ -171,6 +171,8 @@ const globalStyles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    borderTopColor: '#ccc',
+    borderTopWidth: 3,
   },
   activeIndicator: {
     width: 8,

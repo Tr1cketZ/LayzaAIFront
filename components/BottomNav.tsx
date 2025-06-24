@@ -32,7 +32,7 @@ export default function BottomNav({ navigation }: { navigation: any }) {
         { isActive('Home')&& <View style={globalStyles.activeIndicator} />}
       </TouchableOpacity>
       <TouchableOpacity onPress={openSubjectSelector}>
-        <Icon name={isActive('LayzaChat') ? "chat-bubble" : "chat-bubble-outline"} size={30} color='#000' />
+        <Icon style={{marginTop:5}} name={isActive('LayzaChat') ? "chat-bubble" : "chat-bubble-outline"} size={30} color='#000' />
         {isActive('LayzaChat') && <View style={globalStyles.activeIndicator} />}
       </TouchableOpacity>
       {/* Só mostra se o usuário existir */}
