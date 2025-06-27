@@ -75,7 +75,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                 key={year}
                 text={year.toString()}
                 backgroundColor="#2F80ED"
-                navigateTo="Placeholder"
+                navigateTo="EnemScreen" 
                 navigation={navigation}
                 style={{ marginRight: 10, width: 70, height: 70 }}
               />

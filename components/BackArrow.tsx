@@ -11,13 +11,13 @@ function BackArrow({navigation}: any) {
         </TouchableOpacity>
     )
 }
-function BackArrowMain({navigation}: any) {
+function BackArrowMain({navigation,color}: any) {
     return (
         <TouchableOpacity
             style={globalStyles.backButtonMain}
             onPress={() => navigation.goBack()}
         >
-            <Icon name="arrow-back" size={30} color="#ffffff" />
+            <Icon name="arrow-back" size={30} color={color || "#ffffff"} />
         </TouchableOpacity>
     )
 }

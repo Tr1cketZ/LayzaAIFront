@@ -28,7 +28,15 @@ const MenuButtom: React.FC<MenuButtomProps> = ({
     return (
         <TouchableOpacity
             style={[styles.button, imageSource ? undefined : { backgroundColor }, style]}
-            onPress={() => navigation.navigate(navigateTo)}
+            onPress={() => {
+                // Se o texto for um ano, envie como parâmetro
+                const year = Number(text);
+                if (!isNaN(year)) {
+                    navigation.navigate(navigateTo, { year });
+                } else {
+                    navigation.navigate(navigateTo);
+                }
+            }}
             activeOpacity={0.8}
         >
             {iconName ? (

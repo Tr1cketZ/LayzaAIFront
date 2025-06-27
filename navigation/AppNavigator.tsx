@@ -13,6 +13,8 @@ import PasswordResetConfirmScreen from '../screens/PasswordReserConfirmScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen';
 import PlaceholderScreen from '../screens/PlaceHolderScreen';
 import ChatScreen from '../screens/ChatScreen';
+import EnemScreen from '../screens/EnemScreen'; 
+import EnemQuestionDetailScreen from '../screens/EnemQuestionDetailsScreen';
 
 type RootStackParamList = {
   Loading: undefined;
@@ -25,6 +27,8 @@ type RootStackParamList = {
   NewPasswordScreen: { email: string; code: string };
   Placeholder: undefined;
   LayzaChat: { subject: { name: string; color: string } };
+  EnemScreen: { year: number };
+  EnemQuestionDetail: { questionId: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -44,6 +48,8 @@ const AppNavigator: React.FC = () => {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Placeholder" component={PlaceholderScreen} />
           <Stack.Screen name="LayzaChat" component={ChatScreen} />
+          <Stack.Screen name="EnemScreen" component={EnemScreen} />
+          <Stack.Screen name="EnemQuestionDetail" component={EnemQuestionDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
