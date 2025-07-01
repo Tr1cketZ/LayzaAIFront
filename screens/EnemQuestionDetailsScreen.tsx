@@ -47,6 +47,7 @@ const EnemQuestionDetailScreen = function ({ navigation, route }: any) {
   // Log para depuração
   useEffect(() => {
     if (question) {
+      console.log('Questão carregada:', question.alternatives);
       if (typeof question.context !== 'string') {
         console.warn('question.context NÃO é string:', question.context);
       }
@@ -88,6 +89,31 @@ const EnemQuestionDetailScreen = function ({ navigation, route }: any) {
     );
   }
 
+  function renderContextWithImages(context: string) {
+    if (!context) return null;
+    const regex = /!\[]\((.*?)\)/g;
+    const parts: (string | { image: string })[] = [];
+    let lastIndex = 0;
+    let match;
+    while ((match = regex.exec(context)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push(context.slice(lastIndex, match.index));
+      }
+      parts.push({ image: match[1] });
+      lastIndex = regex.lastIndex;
+    }
+    if (lastIndex < context.length) {
+      parts.push(context.slice(lastIndex));
+    }
+    return parts.map((part, idx) => {
+      if (typeof part === 'string') {
+        return <Text key={idx} style={styles.context}>{part.trim()}</Text>;
+      } else {
+        return <Image key={idx} source={{ uri: part.image }} style={{ width: '100%', height: 140, borderRadius: 8, marginVertical: 8, backgroundColor: '#eee' }} resizeMode="contain" />;
+      }
+    });
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: '#f7f7f7',paddingBottom: 60 }}>
       <View style={[styles.header, { backgroundColor: headerColor }]}>
@@ -110,10 +136,8 @@ const EnemQuestionDetailScreen = function ({ navigation, route }: any) {
             ))}
           </ScrollView>
         )}
-        {/* Só mostra o contexto se não houver imagem */}
-        {(!question.files || question.files.length === 0) && (
-          <Text style={styles.context}>{typeof question.context === 'string' ? question.context : ''}</Text>
-        )}
+        {/* Sempre mostra o contexto, mesmo se houver imagem */}
+        <View style={{ marginBottom: 8 }}>{renderContextWithImages(typeof question.context === 'string' ? question.context : '')}</View>
         <Text style={styles.altIntro}>{question.alternativesIntroduction}</Text>
         {Array.isArray(question.alternatives) && question.alternatives.length > 0 ? (
           question.alternatives.map((alt, idx) => {

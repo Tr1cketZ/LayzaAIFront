@@ -22,7 +22,7 @@ const getResumo = (context: string | null) => {
 };
 
 export default function EnemQuestionCard({ question, onPress }: EnemQuestionCardProps) {
-  const isImageContext = question.context && question.context.startsWith('![](') && question.files.length > 0;
+  const hasImage = question.files && question.files.length > 0;
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -32,13 +32,15 @@ export default function EnemQuestionCard({ question, onPress }: EnemQuestionCard
           <Text style={styles.language}>  |  {question.language.charAt(0).toUpperCase() + question.language.slice(1)}</Text>
         )}
       </View>
-      {isImageContext ? (
+      {hasImage && (
         <Image
           source={{ uri: question.files[0] }}
           style={styles.image}
           resizeMode="contain"
         />
-      ) : (
+      )}
+      {/* Mostra o resumo do contexto sempre que houver contexto */}
+      {question.context && (
         <Text style={styles.resumo}>{getResumo(question.context)}</Text>
       )}
     </TouchableOpacity>
