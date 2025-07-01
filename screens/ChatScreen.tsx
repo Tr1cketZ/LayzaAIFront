@@ -11,7 +11,7 @@ import ClipIcon from '../components/ClipIcon';
 
 export default function ChatScreen({ navigation, route }: { navigation: any, route: any }) {
     const subject = route.params?.subject || { name: "Matéria", color: "#fff" };
-    const [input, setInput] = useState("");
+    const [input, setInput] = useState(route.params?.initialPrompt || "");
     const [attachedImage, setAttachedImage] = useState<{ uri: string; base64?: string } | null>(null);
     const { messages, sendMessage, loading, clearChat } = useChat(subject);
     const flatListRef = useRef<FlatList>(null);

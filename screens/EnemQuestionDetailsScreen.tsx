@@ -3,6 +3,7 @@ import { View, Text, ActivityIndicator, StyleSheet, ScrollView, Image, Touchable
 import axios from 'axios';
 import { BackArrowMain } from '../components/BackArrow';
 import BottomNav from '../components/BottomNav';
+import AskLayzaButton from '../components/AskLayzaButton';
 
 interface Alternative {
   letter: string;
@@ -94,6 +95,7 @@ const EnemQuestionDetailScreen = function ({ navigation, route }: any) {
         <Text style={styles.headerText}>Questão {question.index} - {question.discipline?.toUpperCase()|| ''}</Text>
       </View>
       <ScrollView contentContainerStyle={{ padding: 18 }}>
+        <AskLayzaButton discipline={question.discipline} navigation={navigation} question={question} />
         <Text style={styles.title}>{question.title}</Text>
         {question.files && question.files.length > 0 && (
           <ScrollView horizontal style={{ marginVertical: 8 }}>
