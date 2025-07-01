@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Alert } from 'react-native';
 
 const ChatLogic = () => {
   const navigation: any = useNavigation();

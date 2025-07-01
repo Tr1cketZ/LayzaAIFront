@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type Message = {
     sender: "user" | "bot";
     content: string;
+    imageUri?: string;
 };
 
 type Subject = {
@@ -122,14 +123,40 @@ Agora, responda à seguinte pergunta: ${userQuestion}`;
     };
 
 
-    const sendMessage = async (userQuestion: string) => {
-        if (!userQuestion.trim()) return;
-        const newMessages: Message[] = [...messages, { sender: "user" as const, content: userQuestion }];
+    // Adapta o tipo Message para suportar imagem opcional
+    const sendMessage = async (userQuestion: string, image?: { uri: string; base64?: string } | null) => {
+        if (!userQuestion.trim() && !image) return;
+        const newMessages: Message[] = [...messages, { sender: "user" as const, content: userQuestion, imageUri: image?.uri }];
         setMessages(newMessages);
         setLoading(true);
 
         // Monte o prompt com histórico
         const prompt = getSubjectPrompt(userQuestion, newMessages);
+
+        let body;
+        if (image && image.base64) {
+            // Payload para imagem + texto
+            body = JSON.stringify({
+                contents: [{
+                    parts: [
+                        {
+                            inline_data: {
+                                mime_type: "image/jpeg",
+                                data: image.base64,
+                            }
+                        },
+                        { text: prompt }
+                    ]
+                }]
+            });
+        } else {
+            // Payload só texto
+            body = JSON.stringify({
+                contents: [{
+                    parts: [{ text: prompt }]
+                }]
+            });
+        }
 
         try {
             const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyD5ERC6pnMAF293CpW6hkprXifPw7GbYOc", {
@@ -137,13 +164,7 @@ Agora, responda à seguinte pergunta: ${userQuestion}`;
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    "contents": [{
-                        "parts": [{
-                            "text": prompt
-                        }]
-                    }]
-                })
+                body
             });
 
             const data = await response.json();

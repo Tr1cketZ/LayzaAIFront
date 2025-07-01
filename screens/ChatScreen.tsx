@@ -7,10 +7,12 @@ import { API_BASE_URL } from "../services/Api";
 import { renderMarkdownToRN } from '../utils/RenderMarkDown';
 import MicIcon from '../components/MicIcon';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ClipIcon from '../components/ClipIcon';
 
 export default function ChatScreen({ navigation, route }: { navigation: any, route: any }) {
     const subject = route.params?.subject || { name: "Matéria", color: "#fff" };
     const [input, setInput] = useState("");
+    const [attachedImage, setAttachedImage] = useState<{ uri: string; base64?: string } | null>(null);
     const { messages, sendMessage, loading, clearChat } = useChat(subject);
     const flatListRef = useRef<FlatList>(null);
     const userProfile = useSelector((state: any) => state.userProfile?.profile);
@@ -29,9 +31,10 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
     }
 
     const handleSend = () => {
-        if (input.trim()) {
-            sendMessage(input);
+        if (input.trim() || attachedImage) {
+            sendMessage(input, attachedImage);
             setInput("");
+            setAttachedImage(null);
         }
     };
 
@@ -86,6 +89,15 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
                 keyboardVerticalOffset={80}
             >
                 <View style={styles.inputContainer}>
+                    {attachedImage && (
+                        <View style={styles.attachmentPreview}>
+                            <Image source={{ uri: attachedImage.uri }} style={styles.attachmentImage} />
+                            <TouchableOpacity onPress={() => setAttachedImage(null)} style={styles.removeAttachment}>
+                                <MaterialIcons name="close" size={18} color="#fff" />
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                    <ClipIcon onImagePicked={setAttachedImage} />
                     <TextInput
                         style={styles.input}
                         placeholder="Digite sua mensagem..."
@@ -96,7 +108,7 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
                         editable={!loading}
                     />
                     <MicIcon onTranscribe={setInput} />
-                    <TouchableOpacity style={styles.sendButton} onPress={handleSend} disabled={loading || !input.trim()}>
+                    <TouchableOpacity style={styles.sendButton} onPress={handleSend} disabled={loading || (!input.trim() && !attachedImage)}>
                         <MaterialIcons name="send" size={24} color="#fff" />
                     </TouchableOpacity>
                 </View>
@@ -170,5 +182,25 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
         borderRadius: 8,
         marginLeft: 8,
+    },
+    attachmentPreview: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 8,
+        backgroundColor: '#eee',
+        borderRadius: 8,
+        padding: 2,
+    },
+    attachmentImage: {
+        width: 36,
+        height: 36,
+        borderRadius: 6,
+    },
+    removeAttachment: {
+        backgroundColor: '#2F80ED',
+        borderRadius: 10,
+        marginLeft: -10,
+        padding: 2,
+        zIndex: 1,
     },
 });
