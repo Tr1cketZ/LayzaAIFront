@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import globalStyles from '../styles/globalStyles';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -60,9 +60,23 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             <Image source={getPhoto()} style={globalStyles.avatarMain} />
           </TouchableOpacity>
         ) : (
-          <View style={[globalStyles.avatarMain, { justifyContent: 'center', alignItems: 'center', backgroundColor: '#eee' }]}>
-            <Icon name="person-outline" size={40} color="#888" />
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert(
+                'Fazer login?',
+                'Você precisa estar logado para acessar seu perfil. Deseja ir para a tela de login?',
+                [
+                  { text: 'Cancelar', style: 'cancel' },
+                  { text: 'Login', style: 'default', onPress: () => navigation.navigate('Login') },
+                ]
+              );
+            }}
+            activeOpacity={0.7}
+          >
+            <View style={[globalStyles.avatarMain, { justifyContent: 'center', alignItems: 'center', backgroundColor: '#eee' }]}> 
+              <Icon name="person-outline" size={40} color="#888" />
+            </View>
+          </TouchableOpacity>
         )}
       </View>
       <View style={[globalStyles.content, {marginTop: -5}]}>
