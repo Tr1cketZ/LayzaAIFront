@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import { BackArrowMain } from '../components/BackArrow';
+import { MaterialIcons } from '@expo/vector-icons';
 
 LocaleConfig.locales['pt-br'] = {
   monthNames: [
@@ -61,7 +62,9 @@ type EventsByDate = {
 };
 
 export default function CalendarScreen({ navigation }: { navigation: any }) {
-  const [selectedDate, setSelectedDate] = useState<string>('');
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+  const [selectedDate, setSelectedDate] = useState<string>(todayStr);
   const [modalVisible, setModalVisible] = useState(false);
   const [eventType, setEventType] = useState<string>(eventTypes[0].value);
   const [eventTitle, setEventTitle] = useState('');
@@ -70,6 +73,7 @@ export default function CalendarScreen({ navigation }: { navigation: any }) {
   const [reminder, setReminder] = useState<number>(reminderOptions[0].value);
   const [events, setEvents] = useState<EventsByDate>({});
   const [eventsForDay, setEventsForDay] = useState<Event[]>([]);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   useEffect(() => {
     loadEvents();
@@ -101,6 +105,15 @@ export default function CalendarScreen({ navigation }: { navigation: any }) {
     setReminder(reminderOptions[0].value);
   };
 
+  const handleEditEvent = (event: Event, index: number) => {
+    setEventType(event.type);
+    setEventTitle(event.title);
+    setEventTime(new Date(event.time));
+    setReminder(event.reminder);
+    setEditingIndex(index);
+    setModalVisible(true);
+  };
+
   const handleAddEvent = async () => {
     if (!eventTitle.trim()) {
       Alert.alert('Preencha o título do evento.');
@@ -112,11 +125,17 @@ export default function CalendarScreen({ navigation }: { navigation: any }) {
       time: eventTime.toISOString(),
       reminder,
     };
-    const dayEvents = events[selectedDate] ? [...events[selectedDate], newEvent] : [newEvent];
+    let dayEvents = events[selectedDate] ? [...events[selectedDate]] : [];
+    if (editingIndex !== null) {
+      dayEvents[editingIndex] = newEvent;
+    } else {
+      dayEvents.push(newEvent);
+    }
     const newEvents = { ...events, [selectedDate]: dayEvents };
     await saveEvents(newEvents);
     scheduleNotification(newEvent, selectedDate);
     setModalVisible(false);
+    setEditingIndex(null);
   };
 
   const scheduleNotification = async (event: Event, dateStr: string) => {
@@ -126,8 +145,8 @@ export default function CalendarScreen({ navigation }: { navigation: any }) {
     if (seconds > 0) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Lembrete: ' + event.title,
-          body: `Evento: ${eventTypes.find(e => e.value === event.type)?.label || event.type} em ${dateStr} às ${eventDate.toLocaleTimeString().slice(0,5)}`,
+          title: 'Lembrete de evento!',
+          body: `Você tem um compromisso: ${event.title} (${eventTypes.find(e => e.value === event.type)?.label || event.type}) em ${dateStr.split('-').reverse().join('/')} às ${eventDate.toLocaleTimeString().slice(0,5)}. Não se esqueça!`,
         },
         trigger: { seconds, repeats: false } as any,
       });
@@ -166,11 +185,41 @@ export default function CalendarScreen({ navigation }: { navigation: any }) {
         <FlatList
           data={eventsForDay}
           keyExtractor={(_, i) => i.toString()}
-          renderItem={({ item }) => (
-            <View style={{ backgroundColor: '#f2f2f2', borderRadius: 8, padding: 10, marginBottom: 8 }}>
-              <Text style={{ fontWeight: 'bold' }}>{item.title}</Text>
-              <Text>{eventTypes.find(e => e.value === item.type)?.label || item.type} - {new Date(item.time).toLocaleTimeString().slice(0,5)}</Text>
-            </View>
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              activeOpacity={0.7}
+              onPress={() => handleEditEvent(item, index)}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#f2f2f2', borderRadius: 8, padding: 10, marginBottom: 8 }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontWeight: 'bold' }}>{item.title}</Text>
+                  <Text>{eventTypes.find(e => e.value === item.type)?.label || item.type} - {new Date(item.time).toLocaleTimeString().slice(0,5)}</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.alert(
+                      'Excluir evento',
+                      'Tem certeza que deseja excluir este evento?',
+                      [
+                        { text: 'Cancelar', style: 'cancel' },
+                        {
+                          text: 'Excluir', style: 'destructive', onPress: async () => {
+                            const updatedEvents = { ...events };
+                            updatedEvents[selectedDate] = (updatedEvents[selectedDate] || []).filter((_, i) => i !== index);
+                            if (updatedEvents[selectedDate].length === 0) delete updatedEvents[selectedDate];
+                            await saveEvents(updatedEvents);
+                          }
+                        }
+                      ]
+                    );
+                  }}
+                  style={{ marginLeft: 12 }}
+                >
+                  <MaterialIcons name="delete" size={24} color="#E53935" />
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
           )}
           ListEmptyComponent={<Text style={{ color: '#888', textAlign: 'center' }}>Nenhum evento para este dia.</Text>}
         />
