@@ -102,7 +102,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             <MenuButtom
               iconName="calendar-today"
               backgroundColor="#27ae60"
-              navigateTo="Placeholder"
+              navigateTo="Calendar"
               navigation={navigation}
               style={{ width: 100, height: 100 }}
             />
