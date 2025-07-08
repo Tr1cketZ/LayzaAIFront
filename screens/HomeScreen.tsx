@@ -31,7 +31,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   const getPhoto = () => {
     if (userPhoto) {
-      return { uri: `${API_BASE_URL}${userPhoto}` };
+      let url = `${API_BASE_URL}${userPhoto}`;
+      // Força reload da imagem ao trocar (quebra cache)
+      url += (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+      return { uri: url };
     }
     return require('../assets/images/studentIcon.png');
   };
@@ -56,7 +59,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={globalStyles.helloUser}>{getGreeting()}, {username}</Text>
         </View>
         {userProfile ? (
-          <TouchableOpacity onPress={() => navigateToPlaceholder('Placeholder')}>
+          <TouchableOpacity onPress={() => navigation.navigate('UserScreen' as never)}>
             <Image source={getPhoto()} style={globalStyles.avatarMain} />
           </TouchableOpacity>
         ) : (

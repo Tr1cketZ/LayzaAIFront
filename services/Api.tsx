@@ -5,14 +5,12 @@ import {
     PerfilUpdateRequest, ConteudoRequest, ProvaRequest, AvaliacaoRequest,
     PerfilResponse, ConteudoResponse, ProvaResponse, AvaliacaoResponse
 } from '../utils/Objects';
-export const API_BASE_URL = process.env.REACT_NATIVE_API_URL || 'http://10.0.2.2:8000';
+export const API_BASE_URL = process.env.EXPO_PUBLIC_REACT_NATIVE_API_URL || 'http://10.0.2.2:8000';
 // Configuração da instância do Axios
 const api: AxiosInstance = axios.create({
-    baseURL: process.env.REACT_NATIVE_API_URL || `${API_BASE_URL}/api`,
+    baseURL: `${API_BASE_URL}/api`,
     timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    // Não defina Content-Type globalmente! O Axios irá setar corretamente para FormData ou JSON.
 });
 // Interceptor para adicionar o token JWT nas requisições autenticadas
 api.interceptors.request.use(
@@ -85,16 +83,24 @@ export const APILayzaPerfil = {
             throw new Error(error.response?.data?.detail || 'Erro ao obter perfil');
         }
     },
-    updatePerfil: async (data: PerfilUpdateRequest): Promise<AxiosResponse<PerfilResponse>> => {
-        try {
-            return await api.put('/perfil/update', data);
-        } catch (error: any) {
-            throw new Error(error.response?.data?.detail || error.response?.data?.email?.[0] || 'Erro ao atualizar perfil');
+    updatePerfil: async (data: any) => {
+        const token = store.getState().auth?.accessToken;
+        const response = await fetch(`${API_BASE_URL}/api/perfil/update/`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            body: data,
+        });
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(err || 'Erro ao atualizar perfil');
         }
+        return await response.json();
     },
     deletePerfil: async (): Promise<AxiosResponse<any>> => {
         try {
-            return await api.delete('/perfil/delete');
+            return await api.delete('/perfil/delete/');
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || 'Erro ao deletar perfil');
         }
@@ -111,7 +117,7 @@ export const APILayzaConteudos = {
     },
     createConteudo: async (data: ConteudoRequest): Promise<AxiosResponse<ConteudoResponse>> => {
         try {
-            return await api.post('/conteudos/create', data);
+            return await api.post('/conteudos/create/', data);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || 'Erro ao criar conteúdo');
         }
@@ -125,14 +131,14 @@ export const APILayzaConteudos = {
     },
     updateConteudo: async (id: number, data: ConteudoRequest): Promise<AxiosResponse<ConteudoResponse>> => {
         try {
-            return await api.put(`/conteudos/${id}/update`, data);
+            return await api.put(`/conteudos/${id}/update/`, data);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || 'Erro ao atualizar conteúdo');
         }
     },
     deleteConteudo: async (id: number): Promise<AxiosResponse<any>> => {
         try {
-            return await api.delete(`/conteudos/${id}/delete`);
+            return await api.delete(`/conteudos/${id}/delete/`);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || 'Erro ao deletar conteúdo');
         }
@@ -200,7 +206,7 @@ export const APILayzaProvas = {
     },
     deleteProva: async (id: number): Promise<AxiosResponse<any>> => {
         try {
-            return await api.delete(`/provas/${id}/delete`);
+            return await api.delete(`/provas/${id}/delete/`);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || 'Erro ao deletar prova');
         }
@@ -217,7 +223,7 @@ export const APILayzaAvaliacao = {
     },
     createAvaliacao: async (data: AvaliacaoRequest): Promise<AxiosResponse<AvaliacaoResponse>> => {
         try {
-            return await api.post('/avaliacoes/create', data);
+            return await api.post('/avaliacoes/create/', data);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || 'Erro ao criar avaliação');
         }
@@ -231,14 +237,14 @@ export const APILayzaAvaliacao = {
     },
     updateAvaliacao: async (id: number, data: AvaliacaoRequest): Promise<AxiosResponse<AvaliacaoResponse>> => {
         try {
-            return await api.put(`/avaliacoes/${id}/update`, data);
+            return await api.put(`/avaliacoes/${id}/update/`, data);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || 'Erro ao atualizar avaliação');
         }
     },
     deleteAvaliacao: async (id: number): Promise<AxiosResponse<any>> => {
         try {
-            return await api.delete(`/avaliacoes/${id}/delete`);
+            return await api.delete(`/avaliacoes/${id}/delete/`);
         } catch (error: any) {
             throw new Error(error.response?.data?.detail || 'Erro ao deletar avaliação');
         }

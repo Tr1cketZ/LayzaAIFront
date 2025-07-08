@@ -104,6 +104,22 @@ const CriarContaScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={globalStyles.buttonText}>Criar Conta</Text>
           </TouchableOpacity>
 
+          {/* Link para Termos e Políticas */}
+          <TouchableOpacity onPress={() => navigation.navigate('TermosPoliticasScreen' as never)}>
+            <Text style={{
+              color: '#2F80ED',
+              textAlign: 'center',
+              textDecorationLine: 'underline',
+              fontSize: 12,
+              marginTop: 12,
+              marginBottom: 2,
+              fontWeight: '500',
+              marginHorizontal: 20,
+            }}>
+              Ao criar uma conta, você concorda com os Termos de Serviço e Política de Privacidade
+            </Text>
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
             <Text style={globalStyles.linkText}>Já tem uma conta? Fazer Login</Text>
           </TouchableOpacity>

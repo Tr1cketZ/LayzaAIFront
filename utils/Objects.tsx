@@ -25,6 +25,8 @@ export interface PerfilUpdateRequest {
     pref_visual?: boolean;
     pref_auditivo?: boolean;
     pref_leitura_escrita?: boolean;
+    serie_atual?: string;
+    foto_perfil?: File;
 }
 
 export interface ConteudoRequest {

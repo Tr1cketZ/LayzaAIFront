@@ -42,9 +42,9 @@ export default function BottomNav({ navigation }: { navigation: any }) {
             <Icon name={isActive('Placeholder') ? "favorite" : "favorite-outline"} size={30} color='#000' />
             { isActive('Placeholder')&& <View style={globalStyles.activeIndicator} />}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigateTo('Placeholder')}>
-            <Icon name={isActive('Placeholder') ? "person" : "person-outline"} size={30} color='#000' />
-            { isActive('Placeholder')&& <View style={globalStyles.activeIndicator} />}
+          <TouchableOpacity onPress={() => navigateTo('UserScreen')}>
+            <Icon name={isActive('UserScreen') ? "person" : "person-outline"} size={30} color='#000' />
+            { isActive('UserScreen')&& <View style={globalStyles.activeIndicator} />}
           </TouchableOpacity>
         </>
       )}

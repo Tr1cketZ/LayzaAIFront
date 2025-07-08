@@ -16,19 +16,29 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
     const { messages, sendMessage, loading, clearChat } = useChat(subject);
     const flatListRef = useRef<FlatList>(null);
     const userProfile = useSelector((state: any) => state.userProfile?.profile);
-    const userPhoto = userProfile?.foto_perfil;
+    // Atualiza a foto do usuário sempre que mudar no Redux, forçando refresh com timestamp
+    const getUserPhoto = () => {
+        if (userProfile?.foto_perfil) {
+            let url = userProfile.foto_perfil.startsWith('http')
+                ? userProfile.foto_perfil
+                : `${API_BASE_URL}${userProfile.foto_perfil}`;
+            url += (url.includes('?') ? '&' : '?') + 't=' + (userProfile.updated_at || Date.now());
+            return { uri: url };
+        }
+        return require("../assets/images/studentIcon.png");
+    };
     const chatPhoto = ({ item }: { item: { sender: string; content: string } }) => {
-        if (userPhoto) {
+        if (item.sender === "user") {
             return <Image
-                source={item.sender === "user" ? { uri: `${API_BASE_URL}${userPhoto}` } : require("../assets/images/avatar.png")}
-                style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
+                source={getUserPhoto()}
+                style={[styles.avatar, { alignSelf: "flex-end" }]}
             />
         }
         return <Image
-            source={item.sender === "user" ? require("../assets/images/studentIcon.png") : require("../assets/images/avatar.png")}
-            style={[styles.avatar, { alignSelf: item.sender === "user" ? "flex-end" : "flex-start" }]}
+            source={require("../assets/images/avatar.png")}
+            style={[styles.avatar, { alignSelf: "flex-start" }]}
         />
-    }
+    };
 
     const handleSend = () => {
         if (input.trim() || attachedImage) {
@@ -38,7 +48,8 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
         }
     };
 
-    const renderMessage = ({ item }: { item: { sender: string; content: string } }) => (
+    // Suporte a imagem enviada pelo usuário no chat
+    const renderMessage = ({ item }: { item: { sender: string; content: string; imageUri?: string } }) => (
         <View>
             {chatPhoto({ item })}
             <View style={[styles.message, item.sender === "user" ? styles.userMessage : styles.botMessage]}>
@@ -46,6 +57,14 @@ export default function ChatScreen({ navigation, route }: { navigation: any, rou
                     ? renderMarkdownToRN(item.content)
                     : <Text style={{ color: "#fff" }}>{item.content}</Text>
                 }
+                {/* Exibe imagem enviada pelo usuário, se houver */}
+                {item.sender === "user" && item.imageUri && (
+                    <Image
+                        source={{ uri: item.imageUri }}
+                        style={{ width: 120, height: 120, borderRadius: 10, marginTop: 8 }}
+                        resizeMode="cover"
+                    />
+                )}
             </View>
         </View>
     );

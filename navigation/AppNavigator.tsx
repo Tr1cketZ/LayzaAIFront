@@ -31,6 +31,9 @@ type RootStackParamList = {
   EnemScreen: { year: number };
   EnemQuestionDetail: { questionId: string };
   Calendar: undefined;
+  UserScreen: undefined;
+  UserEditScreen: undefined;
+  TermosPoliticasScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -53,6 +56,9 @@ const AppNavigator: React.FC = () => {
           <Stack.Screen name="LayzaChat" component={ChatScreen} />
           <Stack.Screen name="EnemScreen" component={EnemScreen} />
           <Stack.Screen name="EnemQuestionDetail" component={EnemQuestionDetailScreen} />
+          <Stack.Screen name="UserScreen" component={require('../screens/UserScreen').default} />
+          <Stack.Screen name="UserEditScreen" component={require('../screens/UserEditScreen').default} />
+          <Stack.Screen name="TermosPoliticasScreen" component={require('../screens/TermosPoliticasScreen').default} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
